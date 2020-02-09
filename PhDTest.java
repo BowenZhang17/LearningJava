@@ -1,12 +1,13 @@
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
+/// in general test methods should be more descriptive, testAssert dosen't tell me anything about what
+/// you are testing
 public class PhDTest {
 
 	@Test
 	public void testConstructor1() {
-		PhD Gries = new PhD("Gries", 4, 1920, 'b');
+		PhD Gries = new PhD("Gries", 4, 1920, 'b'); /// variable names should be camelCase
 		assertEquals(Gries.name(), "Gries");
 		assertEquals(Gries.month(), 4); 
 		assertEquals(Gries.year(), 1920); 
@@ -85,6 +86,7 @@ public class PhDTest {
 	
 	@Test
 	public void testAssert() {
+		/// one line per statement
 		try {new PhD("Bowen", 4, 1969, 'h'); fail("no exception thrown");}
 		catch (AssertionError e) {if (e.getMessage() != null) fail();}
 		try {new PhD("", 4, 1969, 'b'); fail("no exception thrown");}
