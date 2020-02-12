@@ -1,4 +1,4 @@
-/* NetIds: Bowen Zhang, bz223. Time  spent: hh hours, mm minutes. */
+﻿/* NetIds: Bowen Zhang, bz223. Time  spent: hh hours, mm minutes. */ /// jingyu is doing comments this way so I'll stay consistent, also don't forget ur hours
 
 /** A collection of static String utility functions. All methods assume that
  * String parameters are non-null.
@@ -20,8 +20,8 @@ public class A2 {
  *   Look at pinned Piazza note "A2 FAQs" regularly for updates.*/
 
     /**Return either s1 + s2 or s1 - s2, depending on b. If b is true, return
-     * the sum, otherwise return the difference. */
-    public static int sumDif(boolean b, int s1, int s2) {
+     * the sum, otherwise return the difference. */ /// this looks like a pre-made comment, but like jingyu said it's usually preferred to start comments below ** line
+    public static int sumDif(boolean b, int s1, int s2) { /// also the comment could be more concise (return x if b is true, else y if b is false)
         // This method is already implemented; it is here to give you something
         // to test, and to show you different ways of writing return statements.
         if (b) {
@@ -49,10 +49,14 @@ public class A2 {
         // TODO 1. There is no need for a loop. Do not use a loop.
         // In all methods, use s1.equals(s2) and NOT s1 == s2 to test
         // equality of s1 and s2.
-    	String s1 = s.substring(0,s.length()/2);
-    	String s2 = s.substring(s.length()/2, s.length());
-    	if (!s1.equals(s2) || s.length()%2 == 1){
-    		return false;
+    	String s1 = s.substring(0,s.length()/2); /// I like to space things out a bit for readability, i.e. s.sub(0, s.len() / 2, s.len())
+    	String s2 = s.substring(s.length()/2, s.length()); /// s.length() 2nd argument is not required, but maybe good for readability
+    	if (!s1.equals(s2) || s.length()%2 == 1){ /// even/odd length check is redundant since you already handle that case by comparing s1 to s2
+                                                  /// if it were odd, there is no way s1.equals(s2) is true because one will be longer than the other
+                                                  /// a small optimization you could do is to do the length check in the beginning to short circuit early
+                                                  /// so you wouldn't have to substring at all on odd len strings (copying strings may be a heavy operation)
+    		return false;                     /// <-- any time you return true/false in an if statement, you could instead just return the boolean in the if statement
+                                                  /// in this case, `return s1.equals(s2)` (and then remove the length check), so you wouldn't need two return statements
     	}
         return true;
     }
@@ -61,7 +65,7 @@ public class A2 {
      * For s = "b", return "b"
      * For s = "aaaabaccc", return "abac" */
     public static String removeDups(String s) {
-    	String deDuped = s;
+    	String deDuped = s; /// I believe in Java this is passed by reference, so it is no different than operating directly on s
     	int tracker = 0;
     	while (tracker < deDuped.length()-1) {
     		//set deDuped equal to values directly before and after repeate char
@@ -71,6 +75,12 @@ public class A2 {
     	      else tracker = tracker+1;
     	}
         return deDuped;
+        /// while I have no doubt all of this works, it is generally pretty hard & not recommended to mutate a string while iterating over it
+        /// this leads to complex logic like incrementing `tracker` sometimes but not other times which can lead to out of bounds errors
+        /// also, the worst case time complexity for this would be if you had a string like "aaaaaaaaaa...", in which you would have to call substring 2*length(s) times
+        /// modifying strings can be a heavy task, so in this case I think it would be better to build an entirely new string as you go along
+        /// you could keep track of the previous seen char as you iterate through s, and append the current char to a new string/stringbuilder if the current char is different
+        /// this way no more substring calls and the loop would be a simple forEach char in s loop
     }
     /** Return s but with each occurrence of a character in input replaced by the
      * corresponding character in output. A character of s that does not appear in
@@ -83,16 +93,16 @@ public class A2 {
      * Examples: replace("hello world", "", "") = "hello world"
      * replace("hello world", "abc", "lmn") = "hello world"
      * replace("hello world", "hod", "xyz") = "xelly wyrlz"
-     * replace("hello world", "helowrd", ".......") = "..... ....."   */
+     * replace("hello world", "helowrd", ".......") = "..... ....."   */ /// just use a hashmap lol
     public static String replace(String s, String input, String output) {
         // TODO 3 This needs only ONE for-loop with a single statement in the
         // loop body. Look for a suitable String method!
     	String inBase = s;
     	for (int tracker = 0; tracker < input.length(); tracker++) {
-    		inBase = inBase.replace(input.charAt(tracker), output.charAt(tracker));
+    		inBase = inBase.replace(input.charAt(tracker), output.charAt(tracker)); /// codewise this is actually quite elegant if you disregard performance :P
     	}
     	return inBase; 
-    }
+    } /// pref add some spaces between functions for readability
     /** Return the shortest substring x of s such that s = x + x + ⋯ + x.
      * Examples:
      * For s = "" return ""
@@ -109,7 +119,7 @@ public class A2 {
     	   String inBase = s;
     	     String shortString = inBase.substring(0,0);
     	     int tracker = 0;
-    	       while (!inBase.replace(shortString,"").isEmpty()) {
+    	       while (!inBase.replace(shortString,"").isEmpty()) { /// that's clever lol
     	         tracker++;
                  shortString = s.substring(0,tracker);}
         return shortString;
@@ -133,8 +143,8 @@ public class A2 {
         //Return integer value if there is no + or -
     	try {
           return(Integer.parseInt(inBase));}
-        catch (NumberFormatException e){
-        	//Split string into arrayS based on + and - operators
+        catch (NumberFormatException e){ /// typically not what catch is used for lol but this would be a pretty pythonic way of doing it
+        	//Split string into arrayS based on + and - operators /// this assumes the string is well formatted and will not throw any other errors when parsing
           String[] arrayS = inBase.split("\\+|-");
           int totalSum = Integer.parseInt(arrayS[0]);
           int arrayTracker = 1;
@@ -142,7 +152,7 @@ public class A2 {
             //Add next integer from arrayS when a + sign is recognized
         	  if (inBase.charAt(loopTracker) == '+') {
               totalSum  = totalSum + Integer.parseInt(arrayS[arrayTracker]);
-            arrayTracker++; }
+            arrayTracker++; } /// all of these } typically go on a new line according to most styles
         	//Subtract next integer from arrayS when a - sign is recognized
             if (inBase.charAt(loopTracker) == '-') {
               totalSum  = totalSum - Integer.parseInt(arrayS[arrayTracker]);
